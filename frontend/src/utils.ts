@@ -1,6 +1,7 @@
 //Adapted from https://stackoverflow.com/a/34270811/10951033
 import {ConsumableSubType, ConsumableType, ValetudoDataPoint} from "./api";
 import {useCallback, useLayoutEffect, useRef} from "react";
+import {getLocalizedConsumableName} from "./i18n/consumableNames"; // i18n fork
 
 export function convertSecondsToHumans(seconds: number, showSeconds = true, showDays = true): string {
     let levels;
@@ -148,6 +149,10 @@ const consumableSubtypeMapping: Record<ConsumableSubType, string> = {
 };
 
 export const getConsumableName = (type: ConsumableType, subType?: ConsumableSubType): string => {
+    const localized = getLocalizedConsumableName(type, subType); // i18n fork
+    if (localized) {
+        return localized;
+    }
     let ret = "";
     if (subType && subType in consumableSubtypeMapping) {
         ret += consumableSubtypeMapping[subType] + " ";

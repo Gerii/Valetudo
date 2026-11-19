@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import { useSnackbar } from "notistack";
 import React from "react";
+import {backendMessage} from "../i18n/BackendText"; // i18n fork
 import {
     QueryClient,
     useMutation,
@@ -292,7 +293,7 @@ const useOnCommandError = (capability: Capability | string): ((error: unknown) =
             errorMessage = error.response.data;
         }
 
-        enqueueSnackbar(`An error occurred while sending command to ${capability}:\n${errorMessage}`, {
+        enqueueSnackbar(backendMessage(`An error occurred while sending command to ${capability}:\n`, errorMessage), {
             preventDuplicate: true,
             key: capability,
             variant: "error",

@@ -1,3 +1,4 @@
+import {BackendText} from "../i18n/BackendText"; // i18n fork
 import {
     Capability,
     RobotAttributeClass,
@@ -281,7 +282,7 @@ const Dock = (): React.ReactElement => {
         return (
             <>
                 <Typography variant="overline">
-                    {dockState}
+                    <BackendText text={dockState}/>
                 </Typography>
 
                 {supportedComponents.length > 0 && (

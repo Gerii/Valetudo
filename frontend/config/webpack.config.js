@@ -310,3 +310,6 @@ module.exports = function (webpackEnv) {
     performance: false,
   };
 };
+
+// i18n fork hook (see AGENTS.md): build-time translation, enabled via VALETUDO_LANG
+module.exports = require("../../i18n/webpack-i18n.js")(module.exports);

@@ -2,6 +2,7 @@ import React, { FunctionComponent } from "react";
 import { Button, ButtonGroup, Stack, styled, Typography } from "@mui/material";
 import { ConsumableSubType, ConsumableType, ValetudoEvent, ValetudoEventInteraction } from "../api";
 import {format8601Ish, formatRelative, getConsumableName} from "../utils";
+import {BackendText} from "../i18n/BackendText"; // i18n fork
 
 export interface ValetudoEventRenderProps {
     event: ValetudoEvent;
@@ -76,7 +77,7 @@ const ErrorEventControl: FunctionComponent<ValetudoEventRenderProps> =
                 <Stack>
                     <EventTimestamp timestamp={event.timestamp}/>
                     <Typography color={color} style={textStyle} sx={{mr: 1}}>
-                        An error occurred: {event.message || "Unknown error"}
+                        An error occurred: {event.message ? <BackendText text={event.message}/> : "Unknown error"}
                     </Typography>
                 </Stack>
                 <Button
@@ -178,7 +179,7 @@ const MissingResourceEventControl: FunctionComponent<ValetudoEventRenderProps> =
                 <Stack>
                     <EventTimestamp timestamp={event.timestamp}/>
                     <Typography color={color} style={textStyle} sx={{mr: 1}}>
-                        {event.message!}
+                        <BackendText text={event.message}/>
                     </Typography>
                 </Stack>
                 <Button
@@ -239,7 +240,7 @@ const ValetudoRuntimeErrorEventControl: FunctionComponent<ValetudoEventRenderPro
                     <EventTimestamp timestamp={event.timestamp}/>
                     <Typography color={color} style={textStyle} sx={{mr: 1}}>
                         Valetudo ran into a problem and reincarnated itself. This should never happen.<br/><br/>
-                        {event.description ? event.description: `Reason: ${event.reason}`}
+                        {event.description ? <BackendText text={event.description}/> : `Reason: ${event.reason}`}
                     </Typography>
                 </Stack>
                 <Button

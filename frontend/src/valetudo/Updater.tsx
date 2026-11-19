@@ -1,3 +1,4 @@
+import {BackendText} from "../i18n/BackendText"; // i18n fork
 import {
     UpdaterState,
     useUpdaterCommandMutation,
@@ -121,7 +122,7 @@ const UpdaterStateComponent : React.FunctionComponent<{ state: UpdaterState | un
             switch (state.__class) {
                 case "ValetudoUpdaterErrorState":
                     return (
-                        <Typography color="red">{state.message}</Typography>
+                        <Typography color="red"><BackendText text={state.message}/></Typography>
                     );
                 case "ValetudoUpdaterDownloadingState":
                     return (

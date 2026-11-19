@@ -1,4 +1,5 @@
 import React, {FunctionComponent} from "react";
+import {BackendText} from "../../i18n/BackendText"; // i18n fork
 import {
     Box,
     Divider,
@@ -59,7 +60,7 @@ const QuirkControl: FunctionComponent<{ quirk: Quirk, style?: React.CSSPropertie
                     }}
                 >
                     <Typography variant="body1" sx={{mb: 0}}>
-                        {props.quirk.title}
+                        <BackendText text={props.quirk.title}/>
                     </Typography>
                     <Divider sx={{mt: 1}} style={{marginBottom: "1rem"}}/>
                     <Select
@@ -76,7 +77,7 @@ const QuirkControl: FunctionComponent<{ quirk: Quirk, style?: React.CSSPropertie
                                         value={o}
                                         key={`${o}_${i}`}
                                     >
-                                        {o}
+                                        <BackendText text={o}/>
                                     </MenuItem>
                                 );
                             })
@@ -87,7 +88,7 @@ const QuirkControl: FunctionComponent<{ quirk: Quirk, style?: React.CSSPropertie
                         sx={{mb: 1}}
                         style={{marginTop: "1rem"}}
                     >
-                        {props.quirk.description}
+                        <BackendText text={props.quirk.description}/>
                     </Typography>
                 </FormControl>
             </Paper>

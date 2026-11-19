@@ -6,6 +6,7 @@ import {
     Typography,
 } from "@mui/material";
 import React from "react";
+import {BackendText} from "../i18n/BackendText"; // i18n fork
 import {
     RobotAttributeClass,
     useRobotAttributeQuery,
@@ -51,8 +52,8 @@ const RobotStatus = (): React.ReactElement => {
 
         return (
             <Typography variant="overline">
-                {status.value}
-                {status.flag !== "none" ? <> &ndash; {status.flag}</> : ""}
+                <BackendText text={status.value}/>
+                {status.flag !== "none" ? <> &ndash; <BackendText text={status.flag}/></> : ""}
             </Typography>
         );
     }, [isStatusError, status]);

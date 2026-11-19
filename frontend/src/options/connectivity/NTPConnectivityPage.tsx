@@ -1,3 +1,4 @@
+import {BackendText} from "../../i18n/BackendText"; // i18n fork
 import {
     Box,
     Button,
@@ -67,7 +68,7 @@ const NTPClientStatusComponent: React.FunctionComponent<{
                 return (
                     <>
                         <Typography variant="h5" color="red">Error: {status.state.type}</Typography>
-                        <Typography color="red">{status.state.message}</Typography>
+                        <Typography color="red"><BackendText text={status.state.message}/></Typography>
                     </>
                 );
             case "ValetudoNTPClientEnabledState":
