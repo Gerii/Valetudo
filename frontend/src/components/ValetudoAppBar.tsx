@@ -1,3 +1,4 @@
+import {HIDDEN_MENU_ROUTES} from "../fork/hiddenMenuRoutes"; // fork
 import {
     AppBar,
     Box,
@@ -403,6 +404,9 @@ const ValetudoAppBar: React.FunctionComponent<{ paletteMode: PaletteMode, setPal
         };
 
         const menuEntryIsVisible = (entry: MenuEntry): boolean => {
+            if (HIDDEN_MENU_ROUTES.includes(entry.route)) { // fork: reachable by URL only
+                return false;
+            }
             // This breaks with the menu generation logic and should likely be refactored if it ever gains siblings
             if (entry.route === "/robot/camera" && !duststreamingEnabled) {
                 return false;

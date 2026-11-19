@@ -39,6 +39,7 @@ upstream release. Your main job here is usually to **update the fork to a new up
 | `frontend/src/controls/Dock.tsx` | `{dockState}` wrapped in `<BackendText/>` | same |
 | `frontend/src/utils.ts` | `getConsumableName` first asks `getLocalizedConsumableName()` (`frontend/src/i18n/consumableNames.ts`), because German needs compound nouns ("Hauptbürste") | Re-add the 4 lines at the top of the function. If upstream adds consumable type/subtype pairs, add their full English name to `consumableNames.ts` |
 | `frontend/src/api/hooks.ts` | `useOnCommandError`: `enqueueSnackbar(backendMessage(\`…${capability}:\n\`, errorMessage), …)` | Keep the English template as the first argument |
+| `frontend/src/components/ValetudoAppBar.tsx` | `menuEntryIsVisible` hides the routes in `frontend/src/fork/hiddenMenuRoutes.ts` (camera, AI assistant) from the menu; the pages stay reachable by URL | Re-add the 3-line check at the top of `menuEntryIsVisible`. To hide or show more pages, edit `hiddenMenuRoutes.ts` |
 | `README.md` | fork note at the top | Keep the note |
 | `package.json` (root) | `"build_de"` script | Re-add the line |
 | `backend/lib/updater/lib/update_provider/GithubValetudoUpdateProvider.js` | `RELEASES_URL` points to `Gerii/Valetudo` instead of `Hypfer/Valetudo`, so the built-in updater installs German releases of this fork | Keep the fork URL |
@@ -46,7 +47,7 @@ upstream release. Your main job here is usually to **update the fork to a new up
 Each changed line carries a `// i18n fork` comment where possible. If upstream adds a new place that shows
 backend-provided text (`.message`, `.description`, `.title` of an API object), wrap it the same way.
 
-New files that upstream never touches: `AGENTS.md`, `i18n/**`, `frontend/src/i18n/**`.
+New files that upstream never touches: `AGENTS.md`, `i18n/**`, `frontend/src/i18n/**`, `frontend/src/fork/**`.
 
 The **nightly** update channel (`GithubValetudoNightlyUpdateProvider.js`) still points to Hypfer's nightly builds,
 because the fork has none. A robot switched to the nightly channel installs the English upstream nightly.
@@ -101,10 +102,11 @@ Requires Node.js ≥ 20 (upstream builds with a current LTS) and `npm ci` once.
    ```
    A wrong placeholder in a frontend translation fails the build with an `i18n:` error that names the key.
    Then run the backend with the mock robot and click through the UI, as described in `i18n/README.md`.
-5. **Commit.** Keep the history at three commits on top of upstream, so the next rebase stays easy:
+5. **Commit.** Keep the history at four commits on top of upstream, so the next rebase stays easy:
    - `i18n: German translation infrastructure and dictionaries` (`AGENTS.md`, `README.md`, `i18n/`, `frontend/src/i18n/`)
    - `i18n: hooks in upstream files` (the frontend files and `package.json` in the table above)
    - `fork: install updates from the fork's GitHub releases` (`GithubValetudoUpdateProvider.js`)
+   - `fork: hide camera and AI assistant from the menu` (`ValetudoAppBar.tsx`, `frontend/src/fork/`)
 
    Squash later changes into the matching commit with `git commit --fixup=<commit>` + `git rebase -i --autosquash`.
    An agent can't run interactive rebases; use `GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash upstream/<tag>` instead.
