@@ -35,8 +35,8 @@ the message then appears as `German (English)`. The first time, it takes a while
 
 ## Manual install on a robot
 
-Needed for the first switch from upstream to the German build, and for builds that the updater does not offer
-(same version as already installed). Pick the binary for your robot (see the supported robots page in `docs/`):
+Needed for the first switch from upstream to the German build (upstream builds only look for updates at Hypfer's
+repository), and for builds that the updater does not offer (same version as already installed). Pick the binary for your robot (see the supported robots page in `docs/`):
 `aarch64`, `armv7` or `armv7-lowmem`; use the `.upx` variant only if the robot is short on storage.
 
 ```sh

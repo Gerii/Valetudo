@@ -42,6 +42,7 @@ upstream release. Your main job here is usually to **update the fork to a new up
 | `frontend/src/components/ValetudoAppBar.tsx` | `menuEntryIsVisible` hides the routes in `frontend/src/fork/hiddenMenuRoutes.ts` (camera, AI assistant) from the menu; the pages stay reachable by URL | Re-add the 3-line check at the top of `menuEntryIsVisible`. To hide or show more pages, edit `hiddenMenuRoutes.ts` |
 | `README.md` | fork note at the top | Keep the note |
 | `package.json` (root) | `"build_de"` script | Re-add the line |
+| `package.json`, `package-lock.json` (root) | `"version": "<upstream version>-de"` | Take upstream's new version and append `-de` |
 | `backend/lib/updater/lib/update_provider/GithubValetudoUpdateProvider.js` | `RELEASES_URL` points to `Gerii/Valetudo` instead of `Hypfer/Valetudo`, so the built-in updater installs German releases of this fork | Keep the fork URL |
 
 Each changed line carries a `// i18n fork` comment where possible. If upstream adds a new place that shows
@@ -56,8 +57,8 @@ because the fork has none. A robot switched to the nightly channel installs the 
 
 Requires Node.js ≥ 20 (upstream builds with a current LTS) and `npm ci` once.
 
-1. **Rebase.** Upstream and fork use the same tag names (`2026.10.0`, …), so upstream tags are kept in their own
-   namespace `upstream/*` and never pushed to the fork:
+1. **Rebase.** Upstream tags are kept in their own namespace `upstream/*` and never pushed to the fork,
+   so they can't be confused with the fork's release tags (`<version>-de`):
    ```sh
    # once
    git remote add upstream https://github.com/Hypfer/Valetudo.git
@@ -68,6 +69,8 @@ Requires Node.js ≥ 20 (upstream builds with a current LTS) and `npm ci` once.
    git rebase upstream/<new-tag>    # on branch "german-translation"
    ```
    Resolve conflicts with the table above. Do not "fix" conflicts by translating upstream code.
+   The `version` in `package.json` and `package-lock.json` (2×, the root entries) conflicts on every upstream release:
+   set it to `<new upstream version>-de`, e.g. `2026.11.0-de`.
 2. **Find what's new.**
    ```sh
    node i18n/scripts/extract.mjs --prune
@@ -102,11 +105,12 @@ Requires Node.js ≥ 20 (upstream builds with a current LTS) and `npm ci` once.
    ```
    A wrong placeholder in a frontend translation fails the build with an `i18n:` error that names the key.
    Then run the backend with the mock robot and click through the UI, as described in `i18n/README.md`.
-5. **Commit.** Keep the history at four commits on top of upstream, so the next rebase stays easy:
+5. **Commit.** Keep the history at five commits on top of upstream, so the next rebase stays easy:
    - `i18n: German translation infrastructure and dictionaries` (`AGENTS.md`, `README.md`, `i18n/`, `frontend/src/i18n/`)
    - `i18n: hooks in upstream files` (the frontend files and `package.json` in the table above)
    - `fork: install updates from the fork's GitHub releases` (`GithubValetudoUpdateProvider.js`)
    - `fork: hide camera and AI assistant from the menu` (`ValetudoAppBar.tsx`, `frontend/src/fork/`)
+   - `fork: version suffix -de` (`version` in `package.json`, `package-lock.json`)
 
    Squash later changes into the matching commit with `git commit --fixup=<commit>` + `git rebase -i --autosquash`.
    An agent can't run interactive rebases; use `GIT_SEQUENCE_EDITOR=: git rebase -i --autosquash upstream/<tag>` instead.
@@ -116,12 +120,13 @@ Requires Node.js ≥ 20 (upstream builds with a current LTS) and `npm ci` once.
 
 Robots running this fork query `https://api.github.com/repos/Gerii/Valetudo/releases`. A release is offered when:
 - it is published, i.e. neither a draft nor a pre-release
-- its tag equals the `version` in `package.json`, and therefore the manifest's version (e.g. `2026.11.0`, no prefix or suffix)
+- its tag equals the `version` in `package.json`, and therefore the manifest's version (e.g. `2026.11.0-de`)
 - it has the binaries under the exact names below, plus `valetudo_release_manifest.json` with their SHA-256 sums
 
-The updater offers the next release after the version currently installed. A robot that already runs `2026.10.0`
-(English or German) is **not** offered a German `2026.10.0`. The first switch to the German build, and translation fixes
-without a new upstream version, have to be installed manually (see `i18n/README.md`).
+The updater offers the next release after the version currently installed. A robot that already runs
+`2026.10.0-de` is not offered `2026.10.0-de` again, so translation fixes without a new upstream version need a new
+version (e.g. `2026.10.0-de.2`) or a manual install. The first switch from upstream to the German build is always manual
+(see `i18n/README.md`), because upstream builds look for updates at Hypfer's repository.
 
 **Only release when the user asks for it. Never push or release on your own.**
 
