@@ -3,6 +3,13 @@
     <p align="center"><h2>Free your vacuum from the cloud</h2></p>
 </div>
 
+> [!NOTE]
+> **This is a fork of [Valetudo](https://github.com/Hypfer/Valetudo) with a German web interface.**
+> The translation is kept as a small patch set and rebased onto every upstream release. Upstream sources stay English, and
+> `VALETUDO_LANG=de npm run build` produces the German build. Robot messages unknown at build time are translated offline in the
+> browser (Mozilla Bergamot). See [`AGENTS.md`](./AGENTS.md) and [`i18n/`](./i18n/) for how it works and how to update it.
+> Everything below is the upstream README.
+
 Valetudo is a cloud replacement for vacuum robots enabling local-only operation. It is not a custom firmware.<br/>
 Here's a diagram illustrating the core operation principle:
 
